@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" InitialTargets="BeforeBuild">
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<IsPackable>false</IsPackable>
+		<InvariantGlobalization>false</InvariantGlobalization>
 
 		<Authors>Alexander Krylkov</Authors>
 		<Product>Simplify</Product>

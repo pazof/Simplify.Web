@@ -154,6 +154,9 @@ namespace Simplify.Web.Modules.Data
 		{
 			IDictionary<string, object?> currentItems = new ExpandoObject()!;
 
+			// Console.WriteLine($"Default Lang: '{_defaultLanguage}'");
+			Console.WriteLine($"Lang from lang manager: '{ _languageManager.Language}'");
+
 			foreach (var file in _stringTableFiles)
 				Load(file, _defaultLanguage, _languageManager.Language, _fileReader, currentItems);
 

@@ -30,6 +30,11 @@ namespace Simplify.Web.Modules
 			if (TrySetLanguageFromCookie(context))
 				return;
 
+			Console.WriteLine($"Default lang: '{settings.DefaultLanguage}'");
+
+			foreach (var c in CultureInfo.GetCultures(CultureTypes.AllCultures))
+				Console.WriteLine($"Culture: '{c}'");
+
 			if (!settings.AcceptBrowserLanguage || (settings.AcceptBrowserLanguage && !TrySetLanguageFromRequestHeader(context)))
 				SetCurrentLanguage(settings.DefaultLanguage);
 		}
@@ -62,17 +67,25 @@ namespace Simplify.Web.Modules
 		/// <param name="language">Language code</param>
 		public bool SetCurrentLanguage(string language)
 		{
+			Console.WriteLine($"Set lang: '{language}'");
+
 			try
 			{
+				Console.WriteLine($"TwoLetterISOLanguageName lang: '{Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName}'");
+				Console.WriteLine($"Thread.CurrentThread.CurrentCulture.DisplayName lang: '{Thread.CurrentThread.CurrentCulture.DisplayName}'");
+
 				Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
 				Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
 
+				Console.WriteLine($"TwoLetterISOLanguageName lang: '{Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName}'");
+				Console.WriteLine($"Thread.CurrentThread.CurrentCulture.DisplayName lang: '{Thread.CurrentThread.CurrentCulture.DisplayName}'");
 				Language = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
 
 				return true;
 			}
-			catch
+			catch (Exception e)
 			{
+				Console.WriteLine($"Exception: '{e.Message}'");
 				return false;
 			}
 		}
@@ -80,6 +93,8 @@ namespace Simplify.Web.Modules
 		private bool TrySetLanguageFromCookie(HttpContext context)
 		{
 			var cookieLanguage = context.Request.Cookies[CookieLanguageFieldName];
+
+			Console.WriteLine($"Cookie lang: '{cookieLanguage}'");
 
 			return !string.IsNullOrEmpty(cookieLanguage) && SetCurrentLanguage(cookieLanguage);
 		}
@@ -92,6 +107,8 @@ namespace Simplify.Web.Modules
 				return false;
 
 			var languageString = languages[0];
+
+			Console.WriteLine($"Accept lang: '{languageString}'");
 
 			var items = languageString.Split(';');
 
